@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import "./Login.scss";
 
 const Login = () => {
+	const navigate = useNavigate();
+
 	const [loginCredentials, setLoginCredentials] = useState({
 		email: "",
 		password: "",
@@ -26,6 +29,10 @@ const Login = () => {
 		event.preventDefault();
 	};
 
+	const handleSignup = () => {
+		navigate("/signup");
+	};
+
 	return (
 		<div className='login-form'>
 			<div className='form-container'>
@@ -34,10 +41,11 @@ const Login = () => {
 						<h2>Log In</h2>
 					</Form.Group>
 					<Form.Group className='mb-3' controlId='formBasicEmail'>
-						<Form.Label>Email address</Form.Label>
+						<Form.Label className='label'>Email address</Form.Label>
 						<Form.Control
 							type='email'
-							placeholder='Enter email'
+							className='input'
+							placeholder='johndoe@email.com'
 							name='email'
 							onChange={handleChange}
 							value={loginCredentials.email}
@@ -45,28 +53,31 @@ const Login = () => {
 					</Form.Group>
 
 					<Form.Group className='mb-3' controlId='formBasicPassword'>
-						<Form.Label>Password</Form.Label>
+						<Form.Label className='label'>Password</Form.Label>
 						<Form.Control
 							type='password'
-							placeholder='Password'
+							className='input'
+							placeholder='Enter password'
 							onChange={handleChange}
 							value={loginCredentials.password}
 							name='password'
 						/>
 					</Form.Group>
-					<Button
-						variant='primary'
-						type='submit'
-						className='submit-btn'
-						onClick={submitCred}
-					>
+
+					<button type='submit' className='login-btn' onClick={submitCred}>
 						Log In
-					</Button>
+					</button>
+
+					<hr />
 
 					<Form.Group>
-						<p>
-							Create an account. <a href='/signup'>Sign Up</a>
-						</p>
+						<p>OR</p>
+						<button type='submit' className='google-btn'>
+							Continue with Google
+						</button>
+						<button className='signup-btn' onClick={handleSignup}>
+							Create an account
+						</button>
 					</Form.Group>
 				</Form>
 			</div>
