@@ -1,9 +1,8 @@
-.signup-form {
+.login-form {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
-
 
     .form-container {
         border: 1px solid gray;
@@ -46,7 +45,7 @@
             border: none;
         }
 
-        .signup-btn {
+        .login-btn {
             background-color: aquamarine;
         }
 

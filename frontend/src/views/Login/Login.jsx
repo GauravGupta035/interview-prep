@@ -1,42 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
+import { login, reset } from "../../features/auth/authSlice";
 import { Form } from "react-bootstrap";
+
 import "./Login.scss";
 
 const Login = () => {
-	const navigate = useNavigate();
-
 	const [loginCredentials, setLoginCredentials] = useState({
 		email: "",
 		password: "",
 	});
 
-	const handleChange = (event) => {
-		const { name, value } = event.target;
+	const { email, password } = loginCredentials;
 
-		setLoginCredentials((prevValue) => {
-			return {
-				...prevValue,
-				[name]: value,
-			};
-		});
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
+	const { candidate, isLoading, isError, isSuccess, message } = useSelector(
+		(state) => state.auth
+	);
+
+	useEffect(() => {
+		if (isError) {
+			toast.error(message);
+		}
+
+		if (isSuccess || candidate) {
+			navigate("/");
+		}
+
+		dispatch(reset());
+	}, [candidate, isError, isSuccess, message, navigate, dispatch]);
+
+	const handleChange = (event) => {
+		setLoginCredentials((prevState) => ({
+			...prevState,
+			[event.target.name]: event.target.value,
+		}));
 	};
 
 	const submitCred = (event) => {
-		console.log("Submitted login creds");
-
 		event.preventDefault();
+
+		const candidateData = {
+			email,
+			password,
+		};
+
+		// console.log(candidateData);
+
+		dispatch(login(candidateData));
 	};
 
-	const handleSignup = () => {
-		navigate("/signup");
+	const handleRegister = () => {
+		navigate("/register");
 	};
 
 	return (
 		<div className='login-form'>
 			<div className='form-container'>
-				<Form>
+				<Form onSubmit={submitCred}>
 					<Form.Group>
 						<h2>Log In</h2>
 					</Form.Group>
@@ -48,7 +73,7 @@ const Login = () => {
 							placeholder='johndoe@email.com'
 							name='email'
 							onChange={handleChange}
-							value={loginCredentials.email}
+							value={email}
 						/>
 					</Form.Group>
 
@@ -59,12 +84,12 @@ const Login = () => {
 							className='input'
 							placeholder='Enter password'
 							onChange={handleChange}
-							value={loginCredentials.password}
+							value={password}
 							name='password'
 						/>
 					</Form.Group>
 
-					<button type='submit' className='login-btn' onClick={submitCred}>
+					<button type='submit' className='login-btn'>
 						Log In
 					</button>
 
@@ -75,7 +100,7 @@ const Login = () => {
 						<button type='submit' className='google-btn'>
 							Continue with Google
 						</button>
-						<button className='signup-btn' onClick={handleSignup}>
+						<button className='register-btn' onClick={handleRegister}>
 							Create an account
 						</button>
 					</Form.Group>

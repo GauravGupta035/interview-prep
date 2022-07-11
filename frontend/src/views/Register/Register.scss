@@ -1,8 +1,9 @@
-.login-form {
+.register-form {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
+
 
     .form-container {
         border: 1px solid gray;
@@ -45,7 +46,7 @@
             border: none;
         }
 
-        .login-btn {
+        .register-btn {
             background-color: aquamarine;
         }
 
@@ -60,7 +61,5 @@
             align-items: center;
             justify-content: center;
         }
-    }
-
-    
+    }    
 }
